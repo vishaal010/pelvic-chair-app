@@ -2,9 +2,8 @@
 
 Pelvic Chair project voor Stichting Inkluso
 
-# scrummeester
+# Scrummeester
 
 Vishaal Sanichar
 
 # Contributors 
-
