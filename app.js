@@ -1,11 +1,15 @@
 const express = require("express");
-
 const app = express();
+const port = 3000;
+const path = require("path");
 
-app.get("/", function (req, res){
-    res.sendFile(__dirname + "/index.html");
+// Express Middleware for serving static files
+app.use("/public", express.static(__dirname + "/public"));
+
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/index.html");
 });
 
-app.listen(3000, function () {
-    console.log("server is running on localhost 3000");
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
 });
