@@ -6,6 +6,5 @@ Pelvic Chair project voor Stichting Inkluso
 
 Vishaal Sanichar
 
-test
+# Contributors 
 
-test
