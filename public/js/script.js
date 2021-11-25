@@ -1,20 +1,19 @@
 anychart.onDocumentReady(function () {
   // set the data
   var data = [
-    { x: "White", value: 223553265 },
-    { x: "Black or African American", value: 0 },
-    { x: "American Indian and Alaska Native", value: 2932248 },
-    { x: "Asian", value: 14674252 },
-    { x: "Native Hawaiian and Other Pacific Islander", value: 540013 },
-    { x: "Some Other Race", value: 19107368 },
-    { x: "Two or More Races", value: 9009073 },
+    { x: "schuin naar rechts", value: 30 },
+    { x: "schuin naar links", value: 10 },
+    { x: "bovenrug van de leuning af", value: 25 },
+    { x: "onder rug van de leuning af", value: 5 },
+    { x: "goede zithouding", value: 15 },
+  
   ];
 
   // create the chart
   var chart = anychart.pie();
 
   // set the chart title
-  chart.title("Population by Race for the United States: 2010 Census");
+  chart.title("percentage van jouw zithoudingen van de afgelopen week");
 
   // add the data
   chart.data(data);
