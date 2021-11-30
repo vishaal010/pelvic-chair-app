@@ -22,7 +22,7 @@ app.post("/send-mqtt", function(req, res) {
 app.use("/public", express.static(__dirname + "/public"));
 
 app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/startbootstrap-sb-admin-2/index.html");
+  res.sendFile(__dirname + "/index.html");
 });
 
 
