@@ -5,6 +5,7 @@ const port = 3000;
 const path = require("path");
 var mqttHandler = require('./mqtt_handler');
 
+app.use("/css", express.static(__dirname + "/node_modules/bootstrap/dist/css"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 
@@ -21,7 +22,7 @@ app.post("/send-mqtt", function(req, res) {
 app.use("/public", express.static(__dirname + "/public"));
 
 app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/index.html");
+  res.sendFile(__dirname + "/startbootstrap-sb-admin-2/index.html");
 });
 
 
