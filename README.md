@@ -2,6 +2,12 @@
 
 Pelvic Chair project voor Stichting Inkluso
 
+# Wanneer je dit project download!
+- De node_modules staan in de .gitignore, dit betekent dat deze niet zijn verwerkt in deze repository waardoor je de dependencies niet hebt.
+- Om alles te laten werken moet je in VSCode Ctrl + Shift + ` om de terminal te openen.
+- In de terminal voer je npm i in om de dependencies te installeren.
+- Nu werkt het project en kun je ermee aan de slag!
+
 # Error: connect ECONNREFUSED 127.0.0.1:1883
 
 - Maak je geen zorgen over deze error dit komt omdat je de sensoren van Henri niet bij de hand hebt.
