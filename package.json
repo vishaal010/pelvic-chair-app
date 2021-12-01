@@ -6,8 +6,10 @@
     "express-ws": "^5.0.2",
     "fund": "^1.0.0",
     "mqtt": "^4.2.8",
-    "nodemon": "^2.0.15",
     "pug": "^3.0.2",
     "startbootstrap-sb-admin-2": "^3.3.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
