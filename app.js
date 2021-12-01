@@ -1,9 +1,26 @@
+require('dotenv').config();
+
 const express = require("express");
 var bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
 const path = require("path");
+const mongoose = require('mongoose');
 var mqttHandler = require('./mqtt_handler');
+
+mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true});
+
+const conn = mongoose.connection;
+
+conn.on('connected', function() {
+    console.log('database is connected successfully');
+});
+
+conn.on('disconnected',function(){
+    console.log('database is disconnected successfully');
+})
+
+conn.on('error', console.error.bind(console, 'connection error:'));
 
 app.use("/css", express.static(__dirname + "/node_modules/bootstrap/dist/css"));
 app.use(bodyParser.json());
@@ -30,3 +47,6 @@ app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
   
 });
+
+
+module.exports = conn;
