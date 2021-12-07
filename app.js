@@ -7,7 +7,7 @@ const port = 3000;
 const path = require("path");
 const mongoose = require('mongoose');
 var mqttHandler = require('./mqtt_handler');
-const expressLayouts = require("express-ejs-layouts")
+//const expressLayouts = require("express-ejs")
 
 mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true});
 
@@ -27,7 +27,7 @@ app.use("/css", express.static(__dirname + "/node_modules/bootstrap/dist/css"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use(expressLayouts);
+//app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
 var mqttClient = new mqttHandler();
@@ -42,10 +42,15 @@ app.post("/send-mqtt", function(req, res) {
 // Express Middleware for serving static files
 app.use("/public", express.static(__dirname + "/public"));
 
+/*
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
 });
+*/
 
+app.get("/", function (req, res) {
+  res.render('index.ejs')
+}); 
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
