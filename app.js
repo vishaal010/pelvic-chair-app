@@ -46,6 +46,9 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
 });
 
+app.get("/", function (req, res) {
+  res.render('index.ejs')
+}); 
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
