@@ -1,6 +1,8 @@
 const mqtt = require('mqtt');
 let rightflap = 0
 let leftflap = 0
+let leftShoulder = 0
+let rightShoulder = 0
 class MqttHandler {
     constructor() {
       this.mqttClient = null;
