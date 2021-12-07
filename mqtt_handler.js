@@ -1,6 +1,6 @@
 const mqtt = require('mqtt');
-var rightflap = 0
-var leftflap = 0
+let rightflap = 0
+let leftflap = 0
 class MqttHandler {
     constructor() {
       this.mqttClient = null;
@@ -31,13 +31,17 @@ connect() {
     // When a message arrives, console.log it
     this.mqttClient.on('message', function (topic, message) {
         console.log(message.toString());
-        var achair = JSON.parse(message.toString());
+        let achair = JSON.parse(message.toString());
         leftflap = achair.values[0];
         rightflap = achair.values[1];
+        leftShoulder = achair.values[2];
+        rightShoulder = achair.values[3];
         console.log(achair.device);
         console.log(achair.sensorType);
         console.log(leftflap);
         console.log(rightflap);
+        console.log(leftShoulder);
+        console.log(rightShoulder);
     });
 
     this.mqttClient.on('close', () => {
