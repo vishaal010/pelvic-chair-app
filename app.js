@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
+const express = require("express");
+var bodyParser = require("body-parser");
+const app = express();
+const port = 3000;
+const path = require("path");
+const mongoose = require('mongoose');
+const mqttHandler = require('./mqtt_handler');
+//const expressLayouts = require("express-ejs")
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+
 
     <title>Pelvic Chair 2 Dashboard</title>
 
@@ -27,11 +38,31 @@
 <body id="page-top">
    
 
+
+app.use("/css", express.static(__dirname + "/node_modules/bootstrap/dist/css"));
+
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
+
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+
+let mqttClient = new mqttHandler();
+    mqttClient.connect();
+
+
+
+// Routes
+//app.post("/send-mqtt", function(req, res) {
+//  mqttClient.sendMessage(req.body.message);
+//  res.status(200).send("Message sent to mqtt");
+//});
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
@@ -44,6 +75,7 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
+
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
@@ -54,10 +86,28 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
+
+app.get("/", function (req, res) {
+
+
+    // do whatever you like here
+    let getData = mqttClient.data();
+    let rightflap = getData.rightflap;
+    let leftflap = getData.leftflap;
+    let rightshoulder = getData.rightshoulder;
+    let leftshoulder = getData.leftshoulder;
+    console.log("de waarde van dit is:", rightflap, leftflap, rightshoulder, leftshoulder);
+
+
+
+  res.render('index.ejs', {leftflap: leftflap, rightflap: rightflap, rightshoulder: rightshoulder, leftshoulder: leftshoulder});
+}); 
+
             <!-- Heading -->
             <div class="sidebar-heading">
                 Interface
             </div>
+
 
                  <!-- Nav Item - Charts -->
                  <li class="nav-item">
