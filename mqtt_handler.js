@@ -1,8 +1,9 @@
 const mqtt = require('mqtt');
 let rightflap = 0
 let leftflap = 0
-let leftShoulder = 0
-let rightShoulder = 0
+let leftshoulder = 0
+let rightshoulder = 0
+
 class MqttHandler {
     constructor() {
       this.mqttClient = null;
@@ -30,26 +31,37 @@ connect() {
     // mqtt subscriptions
     this.mqttClient.subscribe('esp/test', {qos: 0});
 
+    this.mqttClient.on('close', () => {
+      console.log(`mqtt client disconnected`);
+    });
+  }
+
+  data() {
     // When a message arrives, console.log it
     this.mqttClient.on('message', function (topic, message) {
         console.log(message.toString());
         let achair = JSON.parse(message.toString());
         leftflap = achair.values[0];
         rightflap = achair.values[1];
-        leftShoulder = achair.values[2];
-        rightShoulder = achair.values[3];
+        leftshoulder = achair.values[2];
+        rightshoulder = achair.values[3];
         console.log(achair.device);
         console.log(achair.sensorType);
-        console.log(leftflap);
-        console.log(rightflap);
-        console.log(leftShoulder);
-        console.log(rightShoulder);
-    });
+        console.log(",leftflap",leftflap);
+        console.log(",rightflap",rightflap);
+        console.log(",leftshoulder",leftshoulder);
+        console.log(",rightshoulder",rightshoulder);
 
-    this.mqttClient.on('close', () => {
-      console.log(`mqtt client disconnected`);
     });
+    return {
+      leftflap,
+      rightflap,
+      leftshoulder,
+      rightshoulder
+    }
+   
   }
+  
 
   // Sends a mqtt message to topic: esp/test
   //sendMessage(message) {
