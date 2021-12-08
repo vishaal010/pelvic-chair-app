@@ -52,6 +52,16 @@ app.get("/", function (req, res) {
   res.render('index.ejs')
 }); 
 
+app.get("/login", function (req, res) {
+  res.render('login.ejs')
+}); 
+
+app.get("/tips-sits", function (req, res) {
+  res.render('tips-sits.ejs')
+}); 
+
+
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
   
