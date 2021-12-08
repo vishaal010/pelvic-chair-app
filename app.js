@@ -11,7 +11,7 @@
 
     <title>Pelvic Chair 2 - Dashboard</title>
 
-    <!-- Custom fonts for this template-->
+    <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -82,7 +82,7 @@
                     </div>
                 </div>
             </li>
-                <!--- tips and sits-->
+                <!-- tips and sits-->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/tips-sits" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -204,7 +204,7 @@
                     </ul>
 
                 </nav>
-                <!-- End of Topbar ----------------------------->
+                <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
