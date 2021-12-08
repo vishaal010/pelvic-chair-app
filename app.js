@@ -52,6 +52,17 @@ app.get("/", function (req, res) {
   res.render('index.ejs')
 }); 
 
+//login route
+app.get("/login", function (req, res) {
+  res.render('login.ejs')
+}); 
+
+//register route 
+app.get("/register", function (req, res) {
+  res.render('register.ejs')
+}); 
+
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
   
