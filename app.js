@@ -1,13 +1,34 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
 
+const User = require('./models/User')
 const express = require("express");
-var bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
 const path = require("path");
 const mongoose = require('mongoose');
-var mqttHandler = require('./mqtt_handler');
+const flash = require('express-flash')
+const session = require('express-session')
+const bcrypt = require('bcrypt');
+const localStrategy = require('passport-local').Strategy
+const methodOverride = require('method-override')
+const UserVerification = require('./models/UserVerfication')
+const nodemailer = require('nodemailer')
 
+
+
+/** Setting up passport for login */
+const passport = require('passport');
+
+const {v4 : uuidv4} = require('uuid')
+
+const mqttHandler = require('./mqtt_handler');
+
+
+/** Loading config */
+dotenv.config({ path: './config/.env'});
+
+/** Setting up Database */
 mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true});
 
 const conn = mongoose.connection;
@@ -38,15 +59,308 @@ app.post("/send-mqtt", function(req, res) {
 // Express Middleware for serving static files
 app.use("/public", express.static(__dirname + "/public"));
 
-app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/index.html");
-});
+/** Accept data from req variable */
+app.use(express.urlencoded({extended: false}))
+
+/** Setting up EJS */
+app.set('view-engine', 'ejs')
 
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
   
 });
+
+/**
+ * Routes en Authenfication for the User
+ * ! This still must be placed in routes/user later on
+ * todo: Resendlink needs to be added
+ */
+
+/** Nodemailer  */
+
+let transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.AUTH_EMAIL,
+    pass: process.env.AUTH_PASS
+  }
+})
+
+transporter.verify((error, succes) => {
+  if(error){
+  console.log(error)
+  }
+  else {
+    console.log('Heet luk')
+    console.log(succes)
+  }
+})
+
+/** Setting up flashes and session */
+app.use(flash())
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}))
+
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(methodOverride('_method'))
+
+
+
+passport.use(new localStrategy({
+ usernameField: 'email' 
+},
+function (email, password, done, res){
+  User.findOne({ email : email }, function (err, user){
+    if(err) { return done(err)}
+
+    if(user.verified === false) { 
+      console.log('niet verified')
+      return done(null, false, {message: 'Niet verfieerd'})
+
+    }
+    if(!user) {
+      return done(null, false, {message: 'Verkeerde email'})
+    }
+
+    bcrypt.compare(password, user.password, function(err, res){
+      if (err) return done(err)
+
+      if (res === false) { return done(null, false, { message: 'Verkeerde wachtwoord'} ) }
+
+      return done(null, user)
+    })
+  })
+}))
+
+/** Send verification mail */
+const sendVerificationEmail = ({_id, email},  res) =>  {
+  const currentURL = "http://localhost:3000/"
+
+  const uniqueString = uuidv4() + _id
+
+  const mailOptions = {
+    from: process.env.AUTH_EMAIL,
+    to: email,
+    subject: "Verify mail",
+    html: `<p> Verifieer u emailadress om in te kunnen loggen.</p>
+    <p> De link is <b> Deze link geldt maar voor 6 uurtjes</b>. </p> 
+    <p> Klik <a href=${currentURL + "verify/" + _id + "/" + uniqueString}> Hier </a> om verder te gaan </p>`
+  }
+
+  /** Hash the uniqueString */
+  const saltRounds = 10;
+  bcrypt
+  .hash(uniqueString, saltRounds)
+  .then((hasheduniqueString) => {
+    const newVerification =  new UserVerification({
+      userId: _id,
+      uniqueString: hasheduniqueString,
+      expired_at: Date.now() + 21600000,
+      created_at: Date.now(),
+    })
+
+    newVerification
+    .save()
+    .then(() => {
+      transporter.sendMail(mailOptions)
+      .then(() => {
+        console.log('gestuurd')
+
+      })
+      .catch((err) => {
+        console.log(err)
+
+      })
+    })
+    .catch(err)
+    console.log(err)
+  })
+  .catch(() => {
+  })
+}
+
+/** Verify emai */
+app.get('/verify/:userId/:uniqueString', (req, res) => {
+  let {userId, uniqueString} = req.params
+
+  UserVerification
+  .find({userId})
+  .then((result) => {
+    if (result.length > 0){
+      /** User verification bestaat */
+      const {expired_at} = result[0]
+      const hasheduniqueString = result[0].uniqueString
+
+      if (expired_at < Date.now() ) {
+        /** Hij is verlopen dus moet het worden verwijderd */
+      UserVerification
+      .deleteOne({ userId})
+      .then((result => {
+        User
+        .deleteOne({_id: userId})
+        .then(() => {
+
+        })
+        .catch(error => {
+          console.log(error)
+          let message = "An error occured 1"
+          res.redirect(`/verified/error=true&message=${message}`)
+        })
+      }))
+      .catch((error) => {
+        console.log(error)
+        let message = "An error occured 2"
+        res.redirect(`/verified/error=true&message=${message}`)
+      })
+      } else {
+        /** Valid record exist data  */
+        /** First compare  the hashed uniqe string */
+
+        bcrypt.compare(uniqueString,  hasheduniqueString)
+        .then((result => {
+          if (result) {
+            /** String matches */
+              console.log('ik kom hier langs')
+            User.updateOne({_id: userId}, {verified: true})
+            .then(() => {
+              UserVerification
+              .deleteOne({userId})
+              .then(() => {
+                res.render(path.join(__dirname, "./views/auth/verified.ejs"))
+              })
+              .catch((error) => {
+                console.log(error)
+                let message = "An error occured 6"
+                res.redirect(`/verified/error=true&message=${message}`)
+              })
+            })
+            .catch((error => {
+            console.log(error)
+            let message = "An error occured 6"
+            res.redirect(`/verified/error=true&message=${message}`)
+            }))
+          }
+          else {
+            /** Existing record but incorrect  */
+            let message = "An error occured 7"
+            res.redirect(`/verified/error=true&message=${message}`)
+          }
+        }))
+        .catch((error => {
+          console.error(error);
+          let message = "An error occured 5"
+          res.redirect(`/verified/error=true&message=${message}`)
+        }))
+      }
+    }
+    /**  User verification bestaat niet */
+    else {
+      let message = "An error occured 3"
+      res.redirect(`/verified/error=true&message=${message}`)
+    }
+  })
+  .catch((error) => {
+    console.log(error)
+    let message = "An error occured4 "
+    res.redirect(`/verified/error=true&message=${message}`)
+  })
+})
+
+/** Verified page route */
+app.get("/verified", (req, res) => {
+  res.sendFile(path.join(__dirname,  "./views/auth/verified.ejs"))
+})
+
+app.get("/", checkAuthenticated, function (req, res) {
+  res.render('index.ejs', { name: req.user.name })
+});
+
+app.get("/login", checkNotAutheticated, function (req, res) {
+  res.render('auth/login.ejs')
+});
+
+app.get("/register", checkNotAutheticated,  function (req, res) {
+  res.render('auth/register.ejs')
+});
+
+app.post("/register", checkNotAutheticated, async function (req, res) {
+  try {
+    let user = await User.findOne({ email: req.body.email });
+    if (user) {
+      return res.status(400).send('That user already exisits!');
+    }
+    else {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    user = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: hashedPassword,
+      date_of_birth: req.body.date_of_birth,
+      verified: false
+    })
+    await user
+    .save()
+    .then((result) => {
+      sendVerificationEmail(result, res)
+
+    })
+    res.redirect('/login');
+  }
+  } catch (err) {
+    res.redirect('/register');
+    console.log(err)
+  }
+  console.log(User)
+})
+
+app.delete('/logout', (req, res) => {
+  req.logOut()
+  res.redirect('/login')
+})
+
+app.post("/login", checkNotAutheticated, passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/login',
+  failureFlash: true
+}) 
+)
+
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/index.ejs");
+});
+
+passport.serializeUser(function (user, done) {
+  done(null,user.id)
+})  
+
+passport.deserializeUser( function (id, done) {
+User.findById(id, function (err, user){
+  done(err, user)
+})
+})
+
+function checkAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next()
+  }
+  res.redirect('/login')
+}
+
+function checkNotAutheticated(req, res, next){
+  if (req.isAuthenticated()) {
+    return res.redirect('/')
+  }
+  return next()
+
+}
+
+
+
 
 
 module.exports = conn;
