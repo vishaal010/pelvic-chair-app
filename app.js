@@ -27,6 +27,8 @@ const {v4 : uuidv4} = require('uuid')
 
 const mqttHandler = require('./mqtt_handler');
 
+// Express Middleware for serving static files
+app.use("/public", express.static(__dirname + "/public"));
 
 /** Loading config */
 dotenv.config({ path: './config/.env'});
@@ -66,8 +68,10 @@ app.use(express.urlencoded({extended: false}))
 app.set('view-engine', 'ejs')
 
 
-
-       
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+  
+}); 
 
 
 /**
@@ -280,11 +284,11 @@ app.get("/", checkAuthenticated, function (req, res) {
 });
 
 app.get("/login", checkNotAutheticated, function (req, res) {
-  res.render('auth/login.ejs')
+  res.render('login.ejs')
 });
 
 app.get("/register", checkNotAutheticated,  function (req, res) {
-  res.render('auth/register.ejs')
+  res.render('register.ejs')
 });
 
 app.post("/register", checkNotAutheticated, async function (req, res) {
@@ -329,9 +333,9 @@ app.post("/login", checkNotAutheticated, passport.authenticate('local', {
 }) 
 )
 
-app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/index.ejs");
-});
+// //app.get("/", function (req, res) {
+//  // res.sendFile(__dirname + "/index.ejs");
+// // });
 
 passport.serializeUser(function (user, done) {
   done(null,user.id)
