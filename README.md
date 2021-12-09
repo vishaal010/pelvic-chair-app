@@ -32,3 +32,17 @@ port: 1883
 }
 
 mqtt client disconnected
+
+# Waarschijnlijk krijg je een error als je nodemon wilt runnen. Dit is niet erg, want dit betekent dat je geen database connectie heb.
+
+Stap 1: Zorg dat je npm i doet. Als dat niet werkt doe dan even npm i dotenv
+
+Stap 2: Maak een .env file aan en zet deze code erin:
+
+<i> code is te vinden op Discord -> Pelvichub -> Notities en Bronnen </i>
+
+
+Stap 3: Zet in je gitignore "env" zodat dit niet meegenomen word naar Github 
+
+
+
