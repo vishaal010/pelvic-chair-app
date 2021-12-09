@@ -1,6 +1,21 @@
-# pelvic-chair-app
+# Pelvic Chair
+De Pelvic Chair is een bestaande stoel die ervoor zorgt om de bekkeninstabiliteit van zwangere vrouwen tijdelijk te doen verlichten. Deze applicatie werkt met een Arduino die dient als sensor. We gebruiken 4 sensoren voor deze stoel en om deze te prototypen. Wij werken voor Stichting Inkluso om dit project te kunnen realiseren en te kunnen implementeren in de praktijk.
 
-Pelvic Chair project voor Stichting Inkluso
+# Als je de weg kwijt bent met het committen
+- Clone deze repository gewoon opnieuw en je bent weer up-to-date.
+- Doe dit via GitHub Desktop.
+
+# Sneller ontwikkelen met Nodemon
+- Als je sneller wilt ontwikkelen dan is het handig om nodemon te gebruiken.
+- Nodemon houdt je saves van je bestanden bij en dan wordt dit updatet waardoor je niet constant de server opnieuw hoeft op te starten met node.
+- Nodemon installeren: npm install nodemon
+- Nodmeon gebruiken: npm app.js
+
+# Wanneer je dit project download!
+- De node_modules staan in de .gitignore, dit betekent dat deze niet zijn verwerkt in deze repository waardoor je de dependencies niet hebt.
+- Om alles te laten werken moet je in VSCode Ctrl + Shift + ` om de terminal te openen.
+- In de terminal voer je npm i in om de dependencies te installeren.
+- Nu werkt het project en kun je ermee aan de slag!
 
 # Error: connect ECONNREFUSED 127.0.0.1:1883
 
