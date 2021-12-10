@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 
 
 
-const User = require('./models/User')
+const {Roles, User} = require('./models/User')
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
@@ -291,6 +291,10 @@ app.get("/register", checkNotAutheticated,  function (req, res) {
   res.render('register.ejs')
 });
 
+app.get("/dashboard", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
+  res.render('dashboard.ejs')
+});
+
 app.post("/register", checkNotAutheticated, async function (req, res) {
   try {
     let user = await User.findOne({ email: req.body.email });
@@ -333,9 +337,7 @@ app.post("/login", checkNotAutheticated, passport.authenticate('local', {
 }) 
 )
 
-// //app.get("/", function (req, res) {
-//  // res.sendFile(__dirname + "/index.ejs");
-// // });
+
 
 passport.serializeUser(function (user, done) {
   done(null,user.id)
@@ -346,6 +348,18 @@ User.findById(id, function (err, user){
   done(err, user)
 })
 })
+
+function authRole(role){
+  return (req, res, next) => {
+    if(req.user.roles !== role) {
+      console.log(req.user.roles)
+      console.log(role);
+      res.status(401)
+      return res.send('Je bent geen admin')
+    }
+    next()
+  }
+}
 
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
