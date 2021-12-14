@@ -182,7 +182,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%= name %></span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
@@ -238,7 +238,7 @@
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area">
-                                        <canvas id="myAreaChart"></canvas>
+                                        <canvas id="js-pie-chart"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -361,7 +361,7 @@
                                 <div class="col-lg-6 mb-4">
                                     <div class="card bg-warning text-white shadow">
                                         <div class="card-body">
-                                            <%= rightflap %>
+                                         
                                             <div class="text-white-50 small">#f6c23e</div>
                                         </div>
                                     </div>
@@ -369,7 +369,7 @@
                                 <div class="col-lg-6 mb-4">
                                     <div class="card bg-danger text-white shadow">
                                         <div class="card-body">
-                                            <%= leftflap %>
+                                           
                                             <div class="text-white-50 small">#e74a3b</div>
                                         </div>
                                     </div>
@@ -377,7 +377,7 @@
                                 <div class="col-lg-6 mb-4">
                                     <div class="card bg-secondary text-white shadow">
                                         <div class="card-body">
-                                            <%= leftshoulder %>
+                                            
                                             <div class="text-white-50 small">#858796</div>
                                         </div>
                                     </div>
@@ -385,7 +385,7 @@
                                 <div class="col-lg-6 mb-4">
                                     <div class="card bg-light text-black shadow">
                                         <div class="card-body">
-                                            <%= rightshoulder %>
+                                           
                                             <div class="text-black-50 small">#f8f9fc</div>
                                         </div>
                                     </div>
@@ -487,6 +487,19 @@
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+
+    <!-- Chart.js Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js"
+    integrity="sha512-GMGzUEevhWh8Tc/njS0bDpwgxdCJLQBWG3Z2Ct+JGOpVnEmjvNx6ts4v6A2XJf1HOrtOsfhv3hBKpK9kE5z8AQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Bar Chart Script -->
+    <script src="public/js/bar-chart.js"></script>
+    <!-- Line Chart Script -->
+    <script src="public/js/line-chart.js"></script>
+    <!-- Pie Chart Script -->
+    <script src="public/js/pie-chart.js"></script>
+</body>
 
 
   <!--Javascript partials command-->

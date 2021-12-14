@@ -1,3 +1,6 @@
+
+
+
 // Grab the bar chart canvas
 const barChartContext = document
   .getElementById('js-bar-chart')
@@ -8,14 +11,14 @@ const config = {
   type: 'bar',
   data: {
     // Chart data
-    labels: ['Placeholder1', 'Placeholder2', 'Placeholder3', 'Placeholder4', 'Placeholder5'],
+    labels: ['Rightflap', 'Leftflap', 'Rightshoulder', 'Reftshoulder'],
     
-    // Colors to use #C472B9', '#E4CEE0', '#4382BB', '#84A6D6', '#DDF2F4'
+    // Colors to use #C472B9', '#E4CEE0', '#4382BB', '#84A6D6'
     datasets: [
       {
-        data: [67.7, 63.1, 54.7, 44.1, 40.2],
+        data: [67.7, 63.1, 54.7, 44.1],
         label: 'Pelvic Chair',
-        backgroundColor: ['#C472B9', '#E4CEE0', '#4382BB', '#84A6D6', '#DDF2F4'],
+        backgroundColor: ['#C472B9', '#E4CEE0', '#4382BB', '#84A6D6'],
         borderWidth: 0.3,
         borderColor: 'black',
       },

@@ -1,8 +1,4 @@
-
 const dotenv = require('dotenv');
-
-
-
 const {Roles, User} = require('./models/User')
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -41,16 +37,16 @@ app.use("/css", express.static(__dirname + "/node_modules/bootstrap/dist/css"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-let mqttClient = new mqttHandler();
-    mqttClient.connect();
+// let mqttClient = new mqttHandler();
+//     mqttClient.connect();
 
 /** Get data from sensors */
-let getData = mqttClient.data();
-let rightflap = getData.rightflap;
-let leftflap = getData.leftflap;
-let rightshoulder = getData.rightshoulder;
-let leftshoulder = getData.leftshoulder;
-console.log("de waarde van dit is:", rightflap, leftflap, rightshoulder, leftshoulder);
+// let getData = mqttClient.data();
+// let rightflap = getData.rightflap;
+// let leftflap = getData.leftflap;
+// let rightshoulder = getData.rightshoulder;
+// let leftshoulder = getData.leftshoulder;
+// console.log("de waarde van dit is:", rightflap, leftflap, rightshoulder, leftshoulder);
 
 
 // Routes
@@ -273,23 +269,32 @@ app.get('/verify/:userId/:uniqueString', (req, res) => {
     res.redirect(`/verified/error=true&message=${message}`)
   })
 })
+
+
   
 /** Verified page route */
 app.get("/verified", (req, res) => {
   res.sendFile(path.join(__dirname,  "./views/auth/verified.ejs"))
 })
 
-app.get("/", checkAuthenticated, function (req, res) {
-  res.render('index.ejs', { name: req.user.name, leftflap: leftflap, rightflap: rightflap, rightshoulder: rightshoulder, leftshoulder: leftshoulder})
+/** Homepage */
+app.get("/", function (req, res) {
+  res.render('index.ejs')
 });
 
+/** Login page */
 app.get("/login", checkNotAutheticated, function (req, res) {
   res.render('login.ejs')
 });
 
+/** Register page */
 app.get("/register", checkNotAutheticated,  function (req, res) {
   res.render('register.ejs')
 });
+
+app.get("/chart", function (req, res) {
+  res.render('chart.ejs')
+})
 
 app.get("/dashboard", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
   res.render('dashboard.ejs')
