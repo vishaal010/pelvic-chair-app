@@ -295,9 +295,23 @@ app.get("/dashboard", checkAuthenticated, authRole(Roles.ADMIN),  function (req,
   res.render('dashboard.ejs')
 });
 
-app.get("/users", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
+app.get("/admin", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
   res.render('admin.ejs')
 });
+
+app.get("/achivements", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
+  res.render('achivement.ejs')
+});
+
+app.get("/tips-sits", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
+  res.render('tips-sits.ejs')
+});
+
+
+app.get("/personal", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
+  res.render('personal.ejs')
+});
+
 
 
 app.post("/register", checkNotAutheticated, async function (req, res) {
