@@ -31,15 +31,42 @@
 <body id="page-top">
 <!-- Page Wrapper -->
 <div id="wrapper">
-<%- include('partials/sidebar.ejs') %>
 
-<div>
-    <p>Hi this is the front page</p>
-</div>
+<%- include('partials/sidebar.ejs')%>
 
+<table>
+    <tbody>
+        <thead class="table-active">Behaald</thead>
+    </tbody>
+    <tbody>
+        <thead class="table-warning">Serial Sitter</thead>
+    </tbody>
+
+</table>
+
+
+
+
+
+<!-- On cells (`td` or `th`) -->
+<tr>
+  <td class="table-inactive">Nog te behalen</td>
+  
+  <td class="table-primary">...</td>
+  <td class="table-secondary">...</td>
+  <td class="table-success">...</td>
+  <td class="table-danger">...</td>
+  <td class="table-warning">...</td>
+  <td class="table-info">...</td>
+  <td class="table-light">...</td>
+  <td class="table-dark">...</td>
+</tr>
 
 <%- include('partials/footer.ejs') %>
 </div>
+            <!-- End of Main Content -->
+
+
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

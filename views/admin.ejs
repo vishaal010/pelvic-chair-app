@@ -31,15 +31,43 @@
 <body id="page-top">
 <!-- Page Wrapper -->
 <div id="wrapper">
-<%- include('partials/sidebar.ejs') %>
-
-<div>
-    <p>Hi this is the front page</p>
-</div>
-
+<%- include('partials/sidebar.ejs')%>
+<table class="table m-2">
+    <thead class="bg-primary">
+      <tr >
+        <th scope="col">#</th>
+        <th scope="col">Naam</th>
+        <th scope="col">Email</th>
+        <th scope="col">Geboorte datum</th>
+        <th scope="col">Account datum</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th class="mx-auto" scope="row">1</th>
+        <td >Mark</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+        <td>time is fake</td>
+        <td>
+            <button type="button" class="btn btn-warning text-secondary">Update</button>
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger text-secondary">Verwijder</button>
+        </td>
+      </tr>
+    </tbody>
+        <button type="button" class="btn btn-primary text-secondary p-2 m-2">Maak gebruiker aan</button>
+  </table>
+  
 
 <%- include('partials/footer.ejs') %>
 </div>
+            <!-- End of Main Content -->
+
+
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
