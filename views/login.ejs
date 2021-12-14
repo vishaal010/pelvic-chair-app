@@ -21,36 +21,8 @@
 
 </head>
 <body>
-    <!--- Insert sidebar-->
-  
+    <!-- Insert sidebar-->
     <!-- Insert header-->
     <!-- dashboard-->
-
-    <!-- form -->
-    <form action="/login" method="post">
-      <% if (messages.error) { %>
-        <%= messages.error %>
-      <% } %>
-        <div class="container">
-          <label for="uname"><b>Email</b></label>
-          <input type="text" placeholder="Enter Name" name="email" required>
-      
-          <label for="psw"><b>Wachtwoord</b></label>
-          <input type="password" placeholder="Enter Password" name="password" required>
-      
-          <button type="submit">Login</button>
-          <label>
-            <input type="checkbox" checked="checked" name="remember"> Remember me
-          </label>
-        </div>
-
-        <div class="container signin">
-          <p>Don't have an account yet? <a href="/register">Register now</a>.</p>
-        </div>
-      
-        <div class="container" style="background-color:#f1f1f1">
-          <button type="button" class="cancelbtn"><a href="/">Back to homepage</a></button>
-        </div>
-      </form>
 </body>
 </html>
