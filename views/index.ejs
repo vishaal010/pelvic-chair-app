@@ -49,7 +49,7 @@
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span><%= leftflap %></span></a>
             </li>
 
             <!-- Divider -->
@@ -173,7 +173,7 @@
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-
+                    <div id="leftflap" data-test= <%= leftflap %>></div>
             
                     <!-- Topbar Navbar -->
             
@@ -393,7 +393,7 @@
                                 <div class="col-lg-6 mb-4">
                                     <div class="card bg-dark text-white shadow">
                                         <div class="card-body">
-                                            Dark
+                                            <% rightflap %>
                                             <div class="text-white-50 small">#5a5c69</div>
                                         </div>
                                     </div>
@@ -498,7 +498,48 @@
     <!-- Line Chart Script -->
     <script src="public/js/line-chart.js"></script>
     <!-- Pie Chart Script -->
-    <script src="public/js/pie-chart.js"></script>
+
+    <script >
+        // let leftflap = document.getElementById('leftflap').dataset.leftflap
+        var leftflap = '<%- JSON.stringify(leftflap) %>'
+        var leftshoulder = '<%- JSON.stringify(leftshoulder) %>'
+        var rightflap = '<%- JSON.stringify(rightflap) %>'
+        var rightshoulder = '<%- JSON.stringify(rightshoulder) %>'
+        console.log(leftflap)
+
+        
+// Grab the bar chart canva
+const pieChartContext = document
+  .getElementById('js-pie-chart')
+  .getContext('2d');
+
+// Creating a new chart instance
+const newPieChart = new Chart(pieChartContext, {
+  // Chart configuration
+  type: 'pie',
+  data: {
+    // Chart Label Vertical
+    labels: ['Rightflap', 'Leftflap', 'Rightshoulder', 'Leftshoulder'],
+    
+    // Colors to use #C472B9', '#E4CEE0', '#4382BB', '#84A6D6'
+    datasets: [
+      {
+        // Chart data
+        data: [rightflap, leftflap, rightshoulder, leftshoulder],
+        label: 'Pelvic Chair',
+        backgroundColor: ['#C472B9', '#E4CEE0', '#4382BB', '#84A6D6'],
+        borderWidth: 0.3,
+        borderColor: 'black',
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    // Maintain the original canvas aspect ratio (width / height) when resizing.
+    maintainAspectRatio: false,
+  },
+});
+    </script>
 </body>
 
 

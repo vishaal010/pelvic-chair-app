@@ -1,3 +1,4 @@
+const path = require("path");
 const mqttHandler = require('../../mqtt_handler');
 
 let mqttClient = new mqttHandler();
@@ -22,13 +23,13 @@ const newPieChart = new Chart(pieChartContext, {
   type: 'pie',
   data: {
     // Chart Label Vertical
-    labels: ['Rightflap', 'Leftflap', 'Rightshoulder', 'Reftshoulder'],
+    labels: ['Rightflap', 'Leftflap', 'Rightshoulder', 'Leftshoulder'],
     
     // Colors to use #C472B9', '#E4CEE0', '#4382BB', '#84A6D6'
     datasets: [
       {
         // Chart data
-        data: [rightflap, leftflap, rightshoulder, leftshoulder],
+        data: [rightshoulder, leftshoulder, rightflap, leftflap],
         label: 'Pelvic Chair',
         backgroundColor: ['#C472B9', '#E4CEE0', '#4382BB', '#84A6D6'],
         borderWidth: 0.3,

@@ -37,16 +37,13 @@ app.use("/css", express.static(__dirname + "/node_modules/bootstrap/dist/css"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// let mqttClient = new mqttHandler();
-//     mqttClient.connect();
 
-/** Get data from sensors */
-// let getData = mqttClient.data();
-// let rightflap = getData.rightflap;
-// let leftflap = getData.leftflap;
-// let rightshoulder = getData.rightshoulder;
-// let leftshoulder = getData.leftshoulder;
-// console.log("de waarde van dit is:", rightflap, leftflap, rightshoulder, leftshoulder);
+  let mqttClient = new mqttHandler();
+      mqttClient.connect();
+
+
+  
+  //res.render('./public/js/pie-chart', {rightflap: rightflap, leftflap: leftflap, rightshoulder: rightshoulder, leftshoulder: leftshoulder})
 
 
 // Routes
@@ -279,7 +276,14 @@ app.get("/verified", (req, res) => {
 
 /** Homepage */
 app.get("/", function (req, res) {
-  res.render('index.ejs')
+    /** Get data from sensors */
+    let getData = mqttClient.data();
+    let rightflap = getData.rightflap;
+    let leftflap = getData.leftflap;
+    let rightshoulder = getData.rightshoulder;
+    let leftshoulder = getData.leftshoulder;
+    console.log("de waarde van dit is:", rightflap, leftflap, rightshoulder, leftshoulder);
+  res.render('index.ejs', {rightflap: rightflap, leftflap: leftflap, rightshoulder: rightshoulder, leftshoulder: leftshoulder})
 });
 
 /** Login page */
