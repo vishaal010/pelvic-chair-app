@@ -8,8 +8,8 @@ De Pelvic Chair is een bestaande stoel die ervoor zorgt om de bekkeninstabilitei
 # Sneller ontwikkelen met Nodemon
 - Als je sneller wilt ontwikkelen dan is het handig om nodemon te gebruiken.
 - Nodemon houdt je saves van je bestanden bij en dan wordt dit updatet waardoor je niet constant de server opnieuw hoeft op te starten met node.
-- Nodemon installeren: npm install nodemon
-- Nodmeon gebruiken: npm app.js
+- Nodemon installeren: npm - i
+- Nodmeon gebruiken: npm run devStart
 
 # Wanneer je dit project download!
 - De node_modules staan in de .gitignore, dit betekent dat deze niet zijn verwerkt in deze repository waardoor je de dependencies niet hebt.
@@ -32,3 +32,17 @@ port: 1883
 }
 
 mqtt client disconnected
+
+# Waarschijnlijk krijg je een error als je nodemon wilt runnen. Dit is niet erg, want dit betekent dat je geen database connectie heb.
+
+Stap 1: Zorg dat je npm i doet. Als dat niet werkt doe dan even npm i dotenv
+
+Stap 2: Maak een .env file aan en zet deze code erin:
+
+<i> code is te vinden op Discord -> Pelvichub -> Notities en Bronnen </i>
+
+
+Stap 3: Zet in je gitignore "env" zodat dit niet meegenomen word naar Github 
+
+
+
