@@ -28,7 +28,7 @@ app.use("/public", express.static(__dirname + "/public"));
 
 /** Loading config */
 dotenv.config({ path: './config/.env'});
-
+const currentURL = "http://localhost:3000/"
 /** Setting up Database */
 mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true});
 
@@ -303,6 +303,25 @@ app.get("/chart", function (req, res) {
 app.get("/dashboard", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
   res.render('dashboard.ejs')
 });
+
+app.get("/admin", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
+  res.render('admin.ejs')
+});
+
+app.get("/achivements", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
+  res.render('achivement.ejs')
+});
+
+app.get("/tips-sits", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
+  res.render('tips-sits.ejs')
+});
+
+
+app.get("/personal", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
+  res.render('personal.ejs')
+});
+
+
 
 app.post("/register", checkNotAutheticated, async function (req, res) {
   try {
