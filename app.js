@@ -308,8 +308,8 @@ app.get("/admin", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res
   res.render('admin.ejs')
 });
 
-app.get("/achivements", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
-  res.render('achivement.ejs')
+app.get("/", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
+  res.render('index.ejs')
 });
 
 app.get("/tips-sits", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
