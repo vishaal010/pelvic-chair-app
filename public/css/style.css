@@ -73,6 +73,12 @@
     outline: 0 !important;
   }
   
+
+  .img-position-area{
+   background-color:#e4cee0;
+
+  }
+
   hr {
     box-sizing: content-box;
     height: 0;
