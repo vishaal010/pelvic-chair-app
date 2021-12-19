@@ -1,51 +1,125 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const ROLES = {
-    ADMIN: 'admin',
-    BASIC: 'basic'
-}
+  ADMIN: "admin",
+  BASIC: "basic",
+};
 
-const ResultSchema = new mongoose.Schema({
-    name: {
-        type: String,
-    }
-})
+const chairDataSchema = new mongoose.Schema({
+  /**
+   * chair_data table
+   */
+  date_time: {
+    type: Date,
+    required: true,
+  },
 
-const UserSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    date_of_birth: {
-        type: Date,
-        required: true
-    },
-    created_at: {
-        type: Date,
-        default: Date.now
-    },
-    verified: {
-        type: Boolean
-    },
-    roles: {
-        type: String,
-        default: ROLES.ADMIN
-    },
+  avg_voltage_vol_1: {
+    type: Number,
+    required: true,
+  },
 
-    results:[ResultSchema]
-    
-})
+  avg_voltage_vol_2: {
+    type: Number,
+    required: true,
+  },
 
+  avg_voltage_vol_3: {
+    type: Number,
+    required: true,
+  },
 
-const User = mongoose.model('User', UserSchema);
-const Roles = ROLES
+  avg_voltage_vol_4: {
+    type: Number,
+    required: true,
+  },
 
-module.exports = {Roles, User}
+  avg_voltage_vol_5: {
+    type: Number,
+    required: true,
+  },
+
+  chair_part: {
+    type: Enum,
+    required: true,
+  },
+});
+
+/**
+ * results table
+ */
+const resultsSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+});
+
+/**
+ * achievements_users table
+ */
+const achievementUsersSchema = new mongoose.Schema({
+  achievements: [achievementsSchema],
+});
+
+/**
+ * achievements table
+ */
+const achievementsSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+});
+
+const usersSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+
+  email: {
+    type: String,
+    required: true,
+  },
+
+  password: {
+    type: String,
+    required: true,
+  },
+
+  date_of_birth: {
+    type: Date,
+    required: true,
+  },
+
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
+
+  verified: {
+    type: Boolean,
+  },
+
+  roles: {
+    type: String,
+    default: ROLES.ADMIN,
+  },
+
+  /**
+   * Relational data:
+   * A user can have chair_data, results, and achievements.
+   * Note: Every relation is a one-to-many relationship in MongoDB
+   * For reference check out the ERD provided in models/erd-pelvic-chair.png
+   */
+  chair_data: [chairDataSchema],
+  results: [resultsSchema],
+  achievements: [achievementUsersSchema],
+  chair_data: [chairDataSchema],
+});
+
+const User = mongoose.model("User", usersSchema);
+const Roles = ROLES;
+
+module.exports = { Roles, User };
