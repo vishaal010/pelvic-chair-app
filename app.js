@@ -61,7 +61,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
       mqttClient.connect();
 
 
-  
+
   //res.render('./public/js/pie-chart', {rightflap: rightflap, leftflap: leftflap, rightshoulder: rightshoulder, leftshoulder: leftshoulder})
 
 
@@ -82,8 +82,8 @@ app.set('view-engine', 'ejs')
 
 server.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
-  
-}); 
+
+});
 
 
 /**
@@ -127,18 +127,18 @@ app.use(methodOverride('_method'))
 
 
 passport.use(new localStrategy({
- usernameField: 'email' 
+ usernameField: 'email'
 },
 function (email, password, done, res){
   User.findOne({ email : email }, function (err, user){
     if(err) { return done(err)}
-
 
     if(!user) {
       return done(null, false, {message: 'Verkeerde email'})
     }
 
     if(user.verified === false) { 
+
       console.log('niet verified')
       return done(null, false, {message: 'Niet verfieerd'})
 
@@ -165,7 +165,7 @@ const sendVerificationEmail = ({_id, email},  res) =>  {
     to: email,
     subject: "Verify mail",
     html: `<p> Verifieer u emailadress om in te kunnen loggen.</p>
-    <p> De link is <b> Deze link geldt maar voor 6 uurtjes</b>. </p> 
+    <p> De link is <b> Deze link geldt maar voor 6 uurtjes</b>. </p>
     <p> Klik <a href=${currentURL + "verify/" + _id + "/" + uniqueString}> Hier </a> om verder te gaan </p>`
   }
 
@@ -289,7 +289,7 @@ app.get('/verify/:userId/:uniqueString', (req, res) => {
 })
 
 
-  
+
 /** Verified page route */
 app.get("/verified", (req, res) => {
   res.sendFile(path.join(__dirname,  "./views/auth/verified.ejs"))
@@ -326,11 +326,13 @@ app.get("/dashboard", checkAuthenticated, authRole(Roles.ADMIN),  function (req,
 });
 
 app.get("/admin", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
-  res.render('admin.ejs')
+  User.find({}, (function (err, users) {
+    res.render('admin.ejs', { userLists: users })
+  }))
 });
 
-app.get("/achivements", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
-  res.render('achivement.ejs')
+app.get("/", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
+  res.render('index.ejs')
 });
 
 app.get("/tips-sits", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
@@ -383,14 +385,14 @@ app.post("/login", checkNotAutheticated, passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
-}) 
+})
 )
 
 
 
 passport.serializeUser(function (user, done) {
   done(null,user.id)
-})  
+})
 
 passport.deserializeUser( function (id, done) {
 User.findById(id, function (err, user){
@@ -424,7 +426,3 @@ function checkNotAutheticated(req, res, next){
   return next()
 
 }
-
-
-
-
