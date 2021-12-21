@@ -4,7 +4,7 @@
 
 <head>
 
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
@@ -27,7 +27,6 @@
 
 </header>
 
-
 <body id="page-top">
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -37,20 +36,23 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Naam</th>
-            <th scope="col">Email</th>
-            <th scope="col">Geboorte datum</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Geboortedatum</th>
             <th scope="col">Account datum</th>
             <th scope="col"></th>
             <th scope="col"></th>
           </tr>
+
         </thead>
         <tbody>
+          <!-- id, naam, email, geboortedatum, account datum -->
+          <% for (let userList of userLists) { %>
           <tr>
-            <th class="mx-auto" scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>time is fake</td>
+            <th class="mx-auto" scope="row">🎄</th>
+            <td><%= userList.name %></td>
+            <td><%= userList.email %></td>
+            <td><%= userList.date_of_birth %></td>
+            <td><%= userList.created_at %></td>
             <td>
               <button type="button" class="btn btn-warning text-secondary">Update</button>
             </td>
@@ -58,6 +60,7 @@
               <button type="button" class="btn btn-danger text-secondary">Verwijder</button>
             </td>
           </tr>
+          <% } %>
         </tbody>
         <button type="button" class="btn btn-primary text-secondary p-2 m-2">Maak gebruiker aan</button>
       </table>

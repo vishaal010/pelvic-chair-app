@@ -40,7 +40,7 @@ const chairDataSchema = new mongoose.Schema({
   },
 
   chair_part: {
-    type: Enum,
+    type: Number,
     required: true,
   },
 });
@@ -56,21 +56,22 @@ const resultsSchema = new mongoose.Schema({
 });
 
 /**
- * achievements_users table
- */
-const achievementUsersSchema = new mongoose.Schema({
-  achievements: [achievementsSchema],
-});
-
-/**
- * achievements table
- */
+* achievements table
+*/
 const achievementsSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
   },
 });
+
+/**
+ * achievements_users table
+ */
+const achievementUsersSchema = new mongoose.Schema({
+  achievements: [achievementsSchema],
+});
+
 
 const usersSchema = new mongoose.Schema({
   name: {
