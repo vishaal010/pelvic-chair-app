@@ -22,10 +22,43 @@
 
     <!-- Custom styles for this template-->
     <link href="../public/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 </head>
 
 <header>
+ 
+</header>
+
+   
+<style>
+article {
+    width: 300px;
+    text-align: center;
+    background-color: #68b04d;
+    border-radius: 10px;
+    margin: 50px auto 20px;
+    padding: 5px;
+    overflow: hidden;
+    box-shadow: 3px 3px 10px #ccc;
+}
+
+article h3 {
+    padding: 10px;
+    color: #fff;
+}
+article .count {
+    padding: 5px;
+}
+article #timer{
+    padding: 5px;
+    color: crimson;
+    background-color: aliceblue;
+    border-radius: 2px;
+}
+
+</style>
+
 
 </header>
 
@@ -39,10 +72,23 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+
+                        <button onclick="timer()" style="border:none">
+                        <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-download fa-sm text-white-50"></i> Start </a>
+                            </button>
                     </div>
 
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+
+                    <article class="clock me-auto" id="model3">
+                        <h3></h3>
+                        <div class="count">
+                          <div id="timer"></div>
+                        </div>
+                      </article>
+
+                      </div>
                     <!-- Content Row -->
                     <div class="row">
 
@@ -141,53 +187,19 @@
     integrity="sha512-GMGzUEevhWh8Tc/njS0bDpwgxdCJLQBWG3Z2Ct+JGOpVnEmjvNx6ts4v6A2XJf1HOrtOsfhv3hBKpK9kE5z8AQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+
+    <!-- Socket Io -->  
+    <script src="/socket.io/socket.io.js"></script>  
     <!-- Bar Chart Script -->
     <script src="public/js/bar-chart.js"></script>
     <!-- Line Chart Script -->
     <script src="public/js/line-chart.js"></script>
     <!-- Pie Chart Script -->
 
-    <script >
-        // let leftflap = document.getElementById('leftflap').dataset.leftflap
-        var leftflap = '<%- JSON.stringify(leftflap) %>'
-        var leftshoulder = '<%- JSON.stringify(leftshoulder) %>'
-        var rightflap = '<%- JSON.stringify(rightflap) %>'
-        var rightshoulder = '<%- JSON.stringify(rightshoulder) %>'
-        console.log(leftflap)
-        
-// Grab the bar chart canva
-const pieChartContext = document
-  .getElementById('js-pie-chart')
-  .getContext('2d');
-// Creating a new chart instance
-const newPieChart = new Chart(pieChartContext, {
-  // Chart configuration
-  type: 'pie',
-  data: {
-    // Chart Label Vertical
-    labels: ['Rightflap', 'Leftflap', 'Rightshoulder', 'Leftshoulder'],
-    
-    // Colors to use #C472B9', '#E4CEE0', '#4382BB', '#84A6D6'
-    datasets: [
-      {
-        // Chart data
-        data: [rightflap, leftflap, rightshoulder, leftshoulder],
-        label: 'Pelvic Chair',
-        backgroundColor: ['#C472B9', '#E4CEE0', '#4382BB', '#84A6D6'],
-        borderWidth: 0.3,
-        borderColor: 'black',
-      },
-    ],
-  },
-  options: {
-    responsive: true,
-    // Maintain the original canvas aspect ratio (width / height) when resizing.
-    maintainAspectRatio: false,
-  },
-});
-    </script>
+    <script src="../public/js/main.js"></script>
 
 </body>
+
 
 
 
