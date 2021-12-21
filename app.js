@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
+const socketio = require('socket.io')
 const path = require("path");
 const mongoose = require('mongoose');
 const flash = require('express-flash')
@@ -13,8 +14,26 @@ const localStrategy = require('passport-local').Strategy
 const methodOverride = require('method-override')
 const UserVerification = require('./models/UserVerfication')
 const nodemailer = require('nodemailer')
+const http = require('http')
+const server = http.createServer(app)
+
+const io = socketio(server)
+
+let userData = []
+
+io.sockets.on('connection', (socket) => {
+  console.log(`new connection id: ${socket.id}`);
+  sendData(socket);
+})
 
 
+  function sendData(socket){
+       socket.emit('data1', Array.from({length: 4}, () => Math.floor(Math.random() * 590)+ 10));
+
+    setTimeout(() => {
+        sendData(socket);
+    }, 1000);
+}
 
 /** Setting up passport for login */
 const passport = require('passport');
@@ -61,7 +80,7 @@ app.use(express.urlencoded({extended: false}))
 app.set('view-engine', 'ejs')
 
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
   
 }); 
@@ -114,13 +133,15 @@ function (email, password, done, res){
   User.findOne({ email : email }, function (err, user){
     if(err) { return done(err)}
 
+
+    if(!user) {
+      return done(null, false, {message: 'Verkeerde email'})
+    }
+
     if(user.verified === false) { 
       console.log('niet verified')
       return done(null, false, {message: 'Niet verfieerd'})
 
-    }
-    if(!user) {
-      return done(null, false, {message: 'Verkeerde email'})
     }
 
     bcrypt.compare(password, user.password, function(err, res){

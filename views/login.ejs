@@ -18,6 +18,9 @@
 
     <!-- Custom styles for this template-->
     <link href="public/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
 </head>
     <!--- Insert sidebar-->
@@ -29,7 +32,8 @@
   <body class="bg-primary" style= margin-top:40px>
     <form action="/login" method="post">
       <% if (messages.error) { %>
-        <%= messages.error %>
+        <%= alertify.alert(messages.error);
+        %>
       <% } %>
         <div class="container">
           <h1 style= margin-top:40px >login</h1>
@@ -53,5 +57,5 @@
           <p>Don't have an account yet? <a href="/register" class="text-danger" >Register now</a></p></button>
         </div>
       </form>
-</body>
+    </body>
 </html>
