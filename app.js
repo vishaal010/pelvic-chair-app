@@ -321,13 +321,16 @@ io.sockets.on('connection', (socket) => {
   console.log(`new connection id: ${socket.id}`);
   sendData(socket)
 
+
   socket.on('data',function (arg1,arg2,arg3,arg4) {
     let rightflap      = Math.floor(arg1)
     let leftflap       = Math.floor(arg2)
     let rightshoulder  = Math.floor(arg3)
     let leftshoulder   = Math.floor(arg4)
+    
+    checkRunning.running = false
 
-    console.log('teest');
+    console.log(checkRunning.running);
     
      let user = socket.request.user;
     
@@ -353,9 +356,6 @@ io.sockets.on('connection', (socket) => {
 
 /** Homepage */
 app.get("/", function (req, res) {
-
-    
-      
   
   res.render('index.ejs')
 })
@@ -394,7 +394,7 @@ app.get("/tips-sits", checkAuthenticated, authRole(Roles.ADMIN),  function (req,
 });
 
 
-app.get("/personal", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
+app.get("/personal/", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
   res.render('personal.ejs')
 });
 
