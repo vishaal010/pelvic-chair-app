@@ -1,9 +1,14 @@
 const socket = io()
 let checkRunning = {}
+let rightflapSingleData     = []
+let leftflapSingleData     = []
+let leftshoulderSingleData  = []
+let rightshoulderSingleData = []
 
-// let numbers = []
 
-        // let leftflap = document.getElementById('leftflap').dataset.leftflap
+
+let numbers = [22,11,23,2]
+
         var leftflap = '<%- JSON.stringify(leftflap) %>'
         var leftshoulder = '<%- JSON.stringify(leftshoulder) %>'
         var rightflap = '<%- JSON.stringify(rightflap) %>'
@@ -30,7 +35,7 @@ const newPieChart = new Chart(pieChartContext, {
     datasets: [
       {
         // Chart data
-        data: [22,11,23,2], 
+        data: numbers, 
         label: 'Pelvic Chair',
         backgroundColor: ['#C472B9', '#E4CEE0', '#4382BB', '#84A6D6'],
         borderWidth: 0.3,
@@ -64,6 +69,7 @@ const newPieChart = new Chart(pieChartContext, {
 
 
 function timer(){
+  console.log('client');
   checkRunning.running = true
     var h3 = document.getElementsByTagName("h3");
     h3[0].innerHTML = "Timer Pelvic Chair";
@@ -72,18 +78,71 @@ function timer(){
       chart.data.datasets[dataSetIndex].data = data;
       chart.update();
     }
+
+ 
     
     socket.on('data1', (res) => {
+    const average = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;  
+    const result = average(res); 
 
+   
+
+    let rightflap     = res[0]
+    let leftflap      = res[1]
+    let leftshoulder  = res[2]
+    let rightshoulder = res[3]
+
+ 
       if(checkRunning.running){
-        updateChartData(newPieChart,res.slice(0,5), 0);
+        updateChartData(newPieChart,res.slice(0,4), 0);
+        
+    
+
+        rightflapSingleData.push(rightflap)
+        leftflapSingleData.push(leftflap)
+        leftshoulderSingleData.push(leftshoulder)
+        rightshoulderSingleData.push(rightshoulder)
+
+
+        console.log('Rightflap : ', rightflapSingleData);
+        console.log('Leftflap: ', leftflapSingleData);
+        console.log('Rightshoulder: ', leftshoulderSingleData);
+        console.log('Leftshoulder: ', rightshoulderSingleData);
+
+        
+
+
+
+        // localStorage.setItem("rightflapAVG", JSON.stringify(rightflapAVG));
+
+        // let storedNames = JSON.parse(localStorage.getItem("rightflap"));
+
+        // console.log('Dit is rightflap gemiddelde',rightflapAVG)
+ 
       }
       else{
-        return
+
+        let rightflapAVG     = average(rightflapSingleData)
+        let leftflapAVG      = average(leftflapSingleData)
+        let rightshoulderAVG = average(rightshoulderSingleData)
+        let leftshoulderAVG  = average(leftshoulderSingleData)
+
+        console.log('Rightflap gemiddelde : ',rightflapAVG);
+        console.log('Leftflap  gemiddelde :',leftflapAVG);
+        console.log('Rightshoulder gemiddelde : ',rightshoulderAVG);
+        console.log('Leftshoulder gemiddelde : ', leftshoulderAVG);
+      
+         socket.emit("data", rightflapAVG,leftflapAVG,rightshoulderAVG,leftshoulderAVG)
+         socket.on('callback', function(data) {
+          console.log(data);
+      });
+
+
+         console.log('pol');
       }
     })
     
-    var sec         = 10,
+    var sec         = 20,
         countDiv    = document.getElementById("timer"),
         countDown   = setInterval(function () {
             'use strict';
@@ -111,7 +170,7 @@ function timer(){
                 
                 clearInterval(countDown);
                 
-                countDiv.innerHTML = 'countdown done';
+                countDiv.innerHTML = 'Bedankt! Neem gerust een pauze :)';
     
                 checkRunning.running = false
                

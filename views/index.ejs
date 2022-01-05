@@ -13,7 +13,6 @@
     <title>Pelvic Chair 2 Dashboard</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
@@ -123,7 +122,7 @@ article #timer{
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Data </h6>
                                     <div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -142,7 +141,7 @@ article #timer{
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="myPieChart"></canvas>
+                                
                                     </div>
                                     <div class="mt-4 text-center small">
                                         <span class="mr-2">
@@ -162,22 +161,11 @@ article #timer{
 
 <%- include('partials/footer.ejs') %>
 </div>
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+
 
 
     <!-- Chart.js Script -->
@@ -187,10 +175,7 @@ article #timer{
 
     <!-- Socket Io -->  
     <script src="/socket.io/socket.io.js"></script>  
-    <!-- Bar Chart Script -->
-    <script src="public/js/bar-chart.js"></script>
-    <!-- Line Chart Script -->
-    <script src="public/js/line-chart.js"></script>
+
     <!-- Pie Chart Script -->
     <script src="../public/js/main.js"></script>
 
@@ -201,7 +186,6 @@ article #timer{
 
 
 <!--Javascript partials command-->
-<script src="js/partials.js"></script>
 </body>
 
 </html>

@@ -1,5 +1,5 @@
 const dotenv = require('dotenv');
-const {Roles, User} = require('./models/User')
+const {Roles, User, chairData} = require('./models/User')
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
@@ -8,6 +8,7 @@ const socketio = require('socket.io')
 const path = require("path");
 const mongoose = require('mongoose');
 const flash = require('express-flash')
+const MongoStore = require('connect-mongo')
 const session = require('express-session')
 const bcrypt = require('bcrypt');
 const localStrategy = require('passport-local').Strategy
@@ -19,20 +20,25 @@ const server = http.createServer(app)
 
 const io = socketio(server)
 
+let a 
+
 let userData = []
 
-io.sockets.on('connection', (socket) => {
-  console.log(`new connection id: ${socket.id}`);
-  sendData(socket);
-})
+let checkRunning = {}
 
-
-  function sendData(socket){
-       socket.emit('data1', Array.from({length: 4}, () => Math.floor(Math.random() * 590)+ 10));
-
-    setTimeout(() => {
-        sendData(socket);
-    }, 1000);
+function sendData(socket){
+  // let getData = mqttClient.data();
+  let data = socket.emit('data1', Array.from({length: 4}, () => Math.floor(Math.random() * 100)+ 10));
+  //  let data = socket.emit('data1', Array.from({length: 4}, () => getData.leftshoulder, getData.rightshoulder, getData.rightflap, getData.leftflap))
+  const timer = setTimeout(async () => {
+    if(checkRunning.running) {
+    sendData(socket);
+      }
+      else {
+        checkRunning.running = false
+        clearTimeout(timer)     
+      }
+  }, 5000);
 }
 
 /** Setting up passport for login */
@@ -41,9 +47,11 @@ const passport = require('passport');
 const {v4 : uuidv4} = require('uuid')
 
 const mqttHandler = require('./mqtt_handler');
+const { check } = require('express-validator');
 
 // Express Middleware for serving static files
 app.use("/public", express.static(__dirname + "/public"));
+
 
 /** Loading config */
 dotenv.config({ path: './config/.env'});
@@ -78,6 +86,8 @@ app.use(express.urlencoded({extended: false}))
 
 /** Setting up EJS */
 app.set('view-engine', 'ejs')
+app.set('socketio', io);
+
 
 
 server.listen(port, () => {
@@ -114,15 +124,25 @@ transporter.verify((error, succes) => {
 
 /** Setting up flashes and session */
 app.use(flash())
-app.use(session({
+const sessionMiddleware = session ({
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: false
-}))
+  saveUninitialized: false,
+  store: MongoStore.create({ mongoUrl: process.env.DATABASE_URL,})
+})
+app.use(sessionMiddleware)
+
 
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
+
+
+const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
+
+io.use(wrap(sessionMiddleware));
+io.use(wrap(passport.initialize()));
+io.use(wrap(passport.session()));
 
 
 
@@ -201,7 +221,7 @@ const sendVerificationEmail = ({_id, email},  res) =>  {
   })
 }
 
-/** Verify emai */
+/** Verify email */
 app.get('/verify/:userId/:uniqueString', (req, res) => {
   let {userId, uniqueString} = req.params
 
@@ -295,16 +315,50 @@ app.get("/verified", (req, res) => {
   res.sendFile(path.join(__dirname,  "./views/auth/verified.ejs"))
 })
 
+
+io.sockets.on('connection', (socket) => {
+  checkRunning.running = true
+  console.log(`new connection id: ${socket.id}`);
+  sendData(socket)
+
+  socket.on('data',function (arg1,arg2,arg3,arg4) {
+    let rightflap      = Math.floor(arg1)
+    let leftflap       = Math.floor(arg2)
+    let rightshoulder  = Math.floor(arg3)
+    let leftshoulder   = Math.floor(arg4)
+
+    console.log('teest');
+    
+     let user = socket.request.user;
+    
+    
+    let sensorData = new chairData ({
+    avg_voltage_vol_1 : rightflap,
+    avg_voltage_vol_2 : leftflap,
+    avg_voltage_vol_3 : rightshoulder,
+    avg_voltage_vol_4 : leftshoulder,
+     user : user
+    
+    })
+    console.log(sensorData);
+    if(sensorData) {
+      return sensorData.save()
+    }
+    else
+    {
+    console.log('werkt niet');
+    }
+    });
+
+
 /** Homepage */
 app.get("/", function (req, res) {
-    /** Get data from sensors */
-    let getData = mqttClient.data();
-    let rightflap = getData.rightflap;
-    let leftflap = getData.leftflap;
-    let rightshoulder = getData.rightshoulder;
-    let leftshoulder = getData.leftshoulder;
-    console.log("de waarde van dit is:", rightflap, leftflap, rightshoulder, leftshoulder);
-  res.render('index.ejs', {rightflap: rightflap, leftflap: leftflap, rightshoulder: rightshoulder, leftshoulder: leftshoulder})
+
+    
+      
+  
+  res.render('index.ejs')
+})
 });
 
 /** Login page */
@@ -426,3 +480,5 @@ function checkNotAutheticated(req, res, next){
   return next()
 
 }
+
+

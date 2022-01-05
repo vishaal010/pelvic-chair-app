@@ -1,1 +1,201 @@
+<!-- Insert image of sitting-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Pelvic Chair 2 Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="../public/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+</head>
+
+<header>
+ 
+</header>
+
+ 
+
+
+</header>
+
+
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
 <%- include('partials/sidebar.ejs') %>
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <% chairdata.forEach(function(chair) { %>    
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">  Dit zijn jou persoonlijke resultaten <%= chair.user.name %> ! en vandaag is het %> </h1>
+                               
+
+                    </div>
+
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+
+                    <article class="clock me-auto" id="model3">
+                        <h3></h3>
+                        <div class="count">
+                          <div id="timer"></div>
+                        </div>
+                      </article>
+
+                      </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+                        <canvas id="js-bar-chart"></canvas>
+     
+
+                    <!-- Content Row -->
+
+                    <div class="row">
+
+                        <!-- Area Chart -->
+                        <div class="col-xl-8 col-lg-7">
+                            <div class="card shadow mb-4">
+
+                                <!-- Card Body -->
+                          
+                                </div>
+                            </div>
+                        </div>
+
+
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-pie pt-4 pb-2">
+                                        <!-- <li><p> De rightflap is : <% //rightflap %></p> </li>
+                                        <li><p> De leftflap is : <% //leftflap %> </p></li>                                
+                                        <li><p> De leftshoulder is : <% //leftshoulder %> </p></li> 
+                                        <li><p> De rightshoulder is : <% //rightshoulder %> </p></li>  -->
+                                    </div>
+                                    <div class="mt-4 text-center small">
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-primary"></i> Direct
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-success"></i> Social
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-info"></i> Referral
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+<%- include('partials/footer.ejs') %>
+</div>
+  
+
+
+    <!-- Chart.js Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js"
+    integrity="sha512-GMGzUEevhWh8Tc/njS0bDpwgxdCJLQBWG3Z2Ct+JGOpVnEmjvNx6ts4v6A2XJf1HOrtOsfhv3hBKpK9kE5z8AQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+   
+    <!-- Bar Chart Script -->
+    <script>
+
+        let avg1 = '<%= chair.avg_voltage_vol_1 %>'
+        let avg2 = '<%= chair.avg_voltage_vol_2 %>'
+        let avg3 = '<%= chair.avg_voltage_vol_3 %>'
+        let avg4 = '<%= chair.avg_voltage_vol_4 %>'
+
+        console.log(avg1);
+    // Grab the bar chart canvas
+    const barChartContext = document
+      .getElementById('js-bar-chart')
+      .getContext('2d');
+    
+    // Chart configuration
+    const config = {
+      type: 'bar',
+      data: {
+        // Chart data
+        labels: ['Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag', 'Zondag'],
+        
+        // Colors to use #C472B9', '#E4CEE0', '#4382BB', '#84A6D6',#C472B9', '#E4CEE0', '#4382BB'
+        datasets: [
+          {
+            data: [avg1,avg1,avg1,avg1,avg1,avg1,avg1],
+            label: 'AVG1',
+            backgroundColor: ['#F9D1D1', '#FFA4B6', '#F765A3', '#A155b9','#165BAA', '#0b1354', '#000'],
+            borderWidth: 0.3,
+            borderColor: 'black',
+          },
+          {
+            data: [avg2, avg2,avg2,avg2,avg2,avg2,avg2],
+            label: 'AVG2',
+            backgroundColor: ['#F9D1D1', '#FFA4B6', '#F765A3', '#A155b9','#165BAA', '#0b1354', '#000'],
+            borderWidth: 0.3,
+            borderColor: 'black',
+          },
+          {
+            data: [avg3,avg3,avg3,avg3,avg3,avg3,avg3],
+            label: 'AVG3',
+            backgroundColor: ['#F9D1D1', '#FFA4B6', '#F765A3', '#A155b9','#165BAA', '#0b1354', '#000'],
+            borderWidth: 0.3,
+            borderColor: 'black',
+          },
+          {
+            data: [avg4,avg4,avg4,avg4,avg4,avg4,avg4],
+            label: 'AVG4',
+            backgroundColor: ['#F9D1D1', '#FFA4B6', '#F765A3', '#A155b9','#165BAA', '#0b1354', '#000'],
+            borderWidth: 0.3,
+            borderColor: 'black',
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            ticks: {
+              callback: function (value) {
+                return value + '%';
+              },
+            },
+          },
+        },
+      },
+    };
+    
+    // Creating a new chart instance
+    const newBarChart = new Chart(barChartContext, config);
+
+    </script>
+    
+    <%  }) %>
+
+</body>
+
+
+
+
+<!--Javascript partials command-->
+
+</body>
+
+</html>
