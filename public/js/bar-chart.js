@@ -2,6 +2,10 @@
 const barChartContext = document
   .getElementById('js-bar-chart')
   .getContext('2d');
+  
+
+  /** Setup Block */
+  
 
 // Chart configuration
 const config = {
@@ -45,6 +49,12 @@ const config = {
   options: {
     responsive: true,
     scales: { 
+      x: {
+        type: 'time',
+        time: {
+            unit: 'month'
+        }
+    },
       y: {
         ticks: {
           callback: function (value) {

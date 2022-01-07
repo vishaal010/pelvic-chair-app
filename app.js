@@ -17,6 +17,7 @@ const UserVerification = require('./models/UserVerfication')
 const nodemailer = require('nodemailer')
 const http = require('http')
 const server = http.createServer(app)
+const moment = require('moment')
 
 const io = socketio(server)
 
@@ -394,8 +395,26 @@ app.get("/tips-sits", checkAuthenticated, authRole(Roles.ADMIN),  function (req,
 });
 
 
-app.get("/personal/", checkAuthenticated, authRole(Roles.ADMIN),  function (req, res) {
-  res.render('personal.ejs')
+app.get("/personal/:userId",  checkAuthenticated, authRole(Roles.ADMIN),   async function (req, res) {
+  try {
+    const chairdata = await chairData.find({
+        userID: req.params.userId,
+       
+    })
+    .populate('user')
+    .limit(1)
+    .exec()
+
+    console.log(chairdata)
+
+    res.render('personal.ejs', {
+      chairdata,
+      moment: moment
+    })
+} catch (err) {
+    console.error(err) 
+    res.render('error/500')
+}
 });
 
 

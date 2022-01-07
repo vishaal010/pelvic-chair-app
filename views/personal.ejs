@@ -113,10 +113,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js"
     integrity="sha512-GMGzUEevhWh8Tc/njS0bDpwgxdCJLQBWG3Z2Ct+JGOpVnEmjvNx6ts4v6A2XJf1HOrtOsfhv3hBKpK9kE5z8AQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+
+
 
    
     <!-- Bar Chart Script -->
     <script>
+
+function formatDate(date){
+    var dd = date.getDate();
+    var mm = date.getMonth()+1;
+    var yyyy = date.getFullYear();
+    if(dd<10) {dd='0'+dd}
+    if(mm<10) {mm='0'+mm}
+    date = yyyy+'-'+mm+'-'+dd;
+    return date
+ }
+    var result = [];
+    for (var i=0; i<7; i++) {
+        var d = new Date();
+        d.setDate(d.getDate() - i);
+        result.push( formatDate(d) )
+   result.join(',');
+ }
+
+
+var [na1, na2, na3,na4,na5,na6,na7] = result;
+ console.log('Dit is',na1);
+
 
         let avg1 = '<%= chair.avg_voltage_vol_1 %>'
         let avg2 = '<%= chair.avg_voltage_vol_2 %>'
@@ -134,33 +160,68 @@
       type: 'bar',
       data: {
         // Chart data
-        labels: ['Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag', 'Zondag'],
         
         // Colors to use #C472B9', '#E4CEE0', '#4382BB', '#84A6D6',#C472B9', '#E4CEE0', '#4382BB'
         datasets: [
           {
-            data: [avg1,avg1,avg1,avg1,avg1,avg1,avg1],
+            data: [
+              {x: na1,  y:avg1 },
+              {x: na2,  y:avg1 },
+              {x: na3,  y:avg1 },
+              {x: na4,  y:avg1 },
+              {x: na5,  y:avg1 },
+              {x: na6,  y:avg1 },
+              {x: na7,  y:avg1 },
+            
+          ],
             label: 'AVG1',
             backgroundColor: ['#F9D1D1', '#FFA4B6', '#F765A3', '#A155b9','#165BAA', '#0b1354', '#000'],
             borderWidth: 0.3,
             borderColor: 'black',
           },
           {
-            data: [avg2, avg2,avg2,avg2,avg2,avg2,avg2],
+            data: [
+              {x: na1,  y:avg2 },
+              {x: na2,  y:avg2 },
+              {x: na3,  y:avg2 },
+              {x: na4,  y:avg2 },
+              {x: na5,  y:avg2 },
+              {x: na6,  y:avg2 },
+              {x: na7,  y:avg2 },
+            
+          ],
             label: 'AVG2',
             backgroundColor: ['#F9D1D1', '#FFA4B6', '#F765A3', '#A155b9','#165BAA', '#0b1354', '#000'],
             borderWidth: 0.3,
             borderColor: 'black',
           },
           {
-            data: [avg3,avg3,avg3,avg3,avg3,avg3,avg3],
+            data: [
+              {x: na1,  y:avg3 },
+              {x: na2,  y:avg3 },
+              {x: na3,  y:avg3 },
+              {x: na4,  y:avg3 },
+              {x: na5,  y:avg3 },
+              {x: na6,  y:avg3 },
+              {x: na7,  y:avg3 },
+            
+          ],
             label: 'AVG3',
             backgroundColor: ['#F9D1D1', '#FFA4B6', '#F765A3', '#A155b9','#165BAA', '#0b1354', '#000'],
             borderWidth: 0.3,
             borderColor: 'black',
           },
           {
-            data: [avg4,avg4,avg4,avg4,avg4,avg4,avg4],
+            data: [
+              {x: na1,  y:avg4 },
+              {x: na2,  y:avg4 },
+              {x: na3,  y:avg4 },
+              {x: na4,  y:avg4 },
+              {x: na5,  y:avg4 },
+              {x: na6,  y:avg4 },
+              {x: na7,  y:avg4 },
+            
+          ],
             label: 'AVG4',
             backgroundColor: ['#F9D1D1', '#FFA4B6', '#F765A3', '#A155b9','#165BAA', '#0b1354', '#000'],
             borderWidth: 0.3,
@@ -171,6 +232,13 @@
       options: {
         responsive: true,
         scales: {
+          x: {
+            type: 'time',
+            time: {
+             
+             unit:'day' 
+            }
+          },
           y: {
             ticks: {
               callback: function (value) {
